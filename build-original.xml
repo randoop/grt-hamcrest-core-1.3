@@ -291,8 +291,6 @@
                     </fileset>
                     <pathelement path="@{classpath}"/>
                 </classpath>
-                <classpath location="${major.jar}"/>
-                <compilerarg value="${plugin}"/>
             </javac>
             <copy file="LICENSE.txt" todir="build/temp/@{modulename}-${version}.jar.contents"/>
             <jar jarfile="build/@{modulename}-${version}.jar" manifest="build/temp/@{modulename}-${version}.jar.manifest/MANIFEST.MF">
