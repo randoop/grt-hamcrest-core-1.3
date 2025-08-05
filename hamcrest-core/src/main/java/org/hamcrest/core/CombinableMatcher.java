@@ -1,5 +1,7 @@
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.hamcrest.*;
 
 import java.util.ArrayList;
@@ -7,10 +9,12 @@ import java.util.ArrayList;
 public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
   private final Matcher<? super T> matcher;
 
+  @Impure
   public CombinableMatcher(Matcher<? super T> matcher) {
     this.matcher = matcher;
   }
 
+  @Impure
   @Override
   protected boolean matchesSafely(T item, Description mismatch) {
     if (!matcher.matches(item)) {
@@ -20,19 +24,23 @@ public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
     return true;
   }
 
+  @Impure
   @Override
   public void describeTo(Description description) {
     description.appendDescriptionOf(matcher);
   }
 
+  @Impure
   public CombinableMatcher<T> and(Matcher<? super T> other) {
     return new CombinableMatcher<T>(new AllOf<T>(templatedListWith(other)));
   }
 
+  @Impure
   public CombinableMatcher<T> or(Matcher<? super T> other) {
     return new CombinableMatcher<T>(new AnyOf<T>(templatedListWith(other)));
   }
 
+  @Impure
   private ArrayList<Matcher<? super T>> templatedListWith(Matcher<? super T> other) {
     ArrayList<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();
     matchers.add(matcher);
@@ -46,6 +54,8 @@ public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
    * For example:
    * <pre>assertThat("fab", both(containsString("a")).and(containsString("b")))</pre>
    */
+  @SideEffectFree
+  @Impure
   @Factory
   public static <LHS> CombinableBothMatcher<LHS> both(Matcher<? super LHS> matcher) {
     return new CombinableBothMatcher<LHS>(matcher);
@@ -53,9 +63,11 @@ public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
   
   public static final class CombinableBothMatcher<X> {
     private final Matcher<? super X> first;
+    @SideEffectFree
     public CombinableBothMatcher(Matcher<? super X> matcher) {
         this.first = matcher;
     }
+    @Impure
     public CombinableMatcher<X> and(Matcher<? super X> other) {
       return new CombinableMatcher<X>(first).and(other);
     }
@@ -67,6 +79,8 @@ public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
    * For example:
    * <pre>assertThat("fan", either(containsString("a")).and(containsString("b")))</pre>
    */
+  @SideEffectFree
+  @Impure
   @Factory
   public static <LHS> CombinableEitherMatcher<LHS> either(Matcher<? super LHS> matcher) {
     return new CombinableEitherMatcher<LHS>(matcher);
@@ -74,9 +88,11 @@ public class CombinableMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
   
   public static final class CombinableEitherMatcher<X> {
     private final Matcher<? super X> first;
+    @SideEffectFree
     public CombinableEitherMatcher(Matcher<? super X> matcher) {
         this.first = matcher;
     }
+    @Impure
     public CombinableMatcher<X> or(Matcher<? super X> other) {
       return new CombinableMatcher<X>(first).or(other);
     }

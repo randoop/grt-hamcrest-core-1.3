@@ -2,6 +2,7 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -21,17 +22,20 @@ public class DescribedAs<T> extends BaseMatcher<T> {
     
     private final static Pattern ARG_PATTERN = Pattern.compile("%([0-9]+)"); 
     
+    @Impure
     public DescribedAs(String descriptionTemplate, Matcher<T> matcher, Object[] values) {
         this.descriptionTemplate = descriptionTemplate;
         this.matcher = matcher;
         this.values = values.clone();
     }
     
+    @Impure
     @Override
     public boolean matches(Object o) {
         return matcher.matches(o);
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         java.util.regex.Matcher arg = ARG_PATTERN.matcher(descriptionTemplate);
@@ -48,6 +52,7 @@ public class DescribedAs<T> extends BaseMatcher<T> {
         }
     }
     
+    @Impure
     @Override
     public void describeMismatch(Object item, Description description) {
         matcher.describeMismatch(item, description);
@@ -67,6 +72,7 @@ public class DescribedAs<T> extends BaseMatcher<T> {
      * @param values
      *     optional values to insert into the tokenised description
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> describedAs(String description, Matcher<T> matcher, Object... values) {
         return new DescribedAs<T>(description, matcher, values);

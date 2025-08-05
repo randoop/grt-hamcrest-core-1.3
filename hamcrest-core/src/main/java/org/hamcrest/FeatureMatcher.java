@@ -1,5 +1,7 @@
 package org.hamcrest;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.internal.ReflectiveTypeFinder;
 
 /**
@@ -21,6 +23,7 @@ public abstract class FeatureMatcher<T, U> extends TypeSafeDiagnosingMatcher<T> 
    * @param featureDescription Descriptive text to use in describeTo
    * @param featureName Identifying text for mismatch message
    */
+  @Impure
   public FeatureMatcher(Matcher<? super U> subMatcher, String featureDescription, String featureName) {
     super(TYPE_FINDER);
     this.subMatcher = subMatcher;
@@ -33,8 +36,10 @@ public abstract class FeatureMatcher<T, U> extends TypeSafeDiagnosingMatcher<T> 
    * @param actual the target object
    * @return the feature to be matched
    */
+  @Pure
   protected abstract U featureValueOf(T actual);
 
+  @Impure
   @Override
   protected boolean matchesSafely(T actual, Description mismatch) {
     final U featureValue = featureValueOf(actual);
@@ -46,6 +51,7 @@ public abstract class FeatureMatcher<T, U> extends TypeSafeDiagnosingMatcher<T> 
     return true;
   };
       
+  @Impure
   @Override
   public final void describeTo(Description description) {
     description.appendText(featureDescription).appendText(" ")

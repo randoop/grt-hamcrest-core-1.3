@@ -1,5 +1,7 @@
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -10,19 +12,24 @@ public abstract class SubstringMatcher extends TypeSafeMatcher<String> {
 
     protected final String substring;
 
+    @Impure
     protected SubstringMatcher(final String substring) {
         this.substring = substring;
     }
 
+    @Pure
+    @Impure
     @Override
     public boolean matchesSafely(String item) {
         return evalSubstringOf(item);
     }
+    @Impure
     @Override
     public void describeMismatchSafely(String item, Description mismatchDescription) {
       mismatchDescription.appendText("was \"").appendText(item).appendText("\"");
     }
     
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("a string ")
@@ -31,7 +38,9 @@ public abstract class SubstringMatcher extends TypeSafeMatcher<String> {
                 .appendValue(substring);
     }
 
+    @Pure
     protected abstract boolean evalSubstringOf(String string);
 
+    @Pure
     protected abstract String relationship();
 }

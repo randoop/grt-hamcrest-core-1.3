@@ -1,5 +1,6 @@
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -18,20 +19,24 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 public class Is<T> extends BaseMatcher<T> {
     private final Matcher<T> matcher;
 
+    @Impure
     public Is(Matcher<T> matcher) {
         this.matcher = matcher;
     }
 
+    @Impure
     @Override
     public boolean matches(Object arg) {
         return matcher.matches(arg);
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("is ").appendDescriptionOf(matcher);
     }
 
+    @Impure
     @Override
     public void describeMismatch(Object item, Description mismatchDescription) {
         matcher.describeMismatch(item, mismatchDescription);
@@ -47,6 +52,7 @@ public class Is<T> extends BaseMatcher<T> {
      * <pre>assertThat(cheese, equalTo(smelly))</pre>
      * 
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> is(Matcher<T> matcher) {
         return new Is<T>(matcher);
@@ -61,6 +67,7 @@ public class Is<T> extends BaseMatcher<T> {
      * <pre>assertThat(cheese, is(equalTo(smelly)))</pre>
      * 
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> is(T value) {
         return is(equalTo(value));
@@ -76,6 +83,7 @@ public class Is<T> extends BaseMatcher<T> {
      *
      * @deprecated use isA(Class<T> type) instead.
      */
+    @Impure
     @Factory
     @Deprecated
     public static <T> Matcher<T> is(Class<T> type) {
@@ -92,6 +100,7 @@ public class Is<T> extends BaseMatcher<T> {
      * <pre>assertThat(cheese, is(instanceOf(Cheddar.class)))</pre>
      * 
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> isA(Class<T> type) {
         final Matcher<T> typeMatcher = instanceOf(type);

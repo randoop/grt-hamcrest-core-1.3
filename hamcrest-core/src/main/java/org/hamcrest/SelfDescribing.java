@@ -1,4 +1,5 @@
 package org.hamcrest;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * The ability of an object to describe itself.
@@ -12,5 +13,6 @@ public interface SelfDescribing {
      * @param description
      *     The description to be built or appended to.
      */
+    @Impure
     void describeTo(Description description);
 }

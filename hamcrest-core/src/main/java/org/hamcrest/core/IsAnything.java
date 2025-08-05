@@ -2,6 +2,8 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Factory;
@@ -15,19 +17,23 @@ public class IsAnything<T> extends BaseMatcher<T> {
 
     private final String message;
 
+    @Impure
     public IsAnything() {
         this("ANYTHING");
     }
 
+    @Impure
     public IsAnything(String message) {
         this.message = message;
     }
 
+    @Pure
     @Override
     public boolean matches(Object o) {
         return true;
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText(message);
@@ -36,6 +42,7 @@ public class IsAnything<T> extends BaseMatcher<T> {
     /**
      * Creates a matcher that always matches, regardless of the examined object.
      */
+    @Impure
     @Factory
     public static Matcher<Object> anything() {
         return new IsAnything<Object>();
@@ -48,6 +55,7 @@ public class IsAnything<T> extends BaseMatcher<T> {
      * @param description
      *     a meaningful {@link String} used when describing itself
      */
+    @Impure
     @Factory
     public static Matcher<Object> anything(String description) {
         return new IsAnything<Object>(description);

@@ -2,6 +2,8 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import static org.hamcrest.core.IsNot.not;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -12,11 +14,13 @@ import org.hamcrest.BaseMatcher;
  * Is the value null?
  */
 public class IsNull<T> extends BaseMatcher<T> {
+    @Pure
     @Override
     public boolean matches(Object o) {
         return o == null;
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("null");
@@ -29,6 +33,7 @@ public class IsNull<T> extends BaseMatcher<T> {
      * <pre>assertThat(cheese, is(nullValue())</pre>
      * 
      */
+    @Impure
     @Factory
     public static Matcher<Object> nullValue() {
         return new IsNull<Object>();
@@ -43,6 +48,7 @@ public class IsNull<T> extends BaseMatcher<T> {
      * <pre>assertThat(cheese, is(not(nullValue())))</pre>
      * 
      */
+    @Impure
     @Factory
     public static Matcher<Object> notNullValue() {
         return not(nullValue());
@@ -58,6 +64,7 @@ public class IsNull<T> extends BaseMatcher<T> {
      * @param type
      *     dummy parameter used to infer the generic type of the returned matcher
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> nullValue(Class<T> type) {
         return new IsNull<T>();
@@ -76,6 +83,7 @@ public class IsNull<T> extends BaseMatcher<T> {
      *     dummy parameter used to infer the generic type of the returned matcher
      *  
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> notNullValue(Class<T> type) {
         return not(nullValue(type));

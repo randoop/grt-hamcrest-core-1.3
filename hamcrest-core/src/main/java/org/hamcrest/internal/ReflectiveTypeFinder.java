@@ -25,6 +25,8 @@
  */
 package org.hamcrest.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.lang.reflect.Method;
 
 public class ReflectiveTypeFinder {
@@ -32,12 +34,14 @@ public class ReflectiveTypeFinder {
   private final int expectedNumberOfParameters;
   private final int typedParameter;
 
+  @SideEffectFree
   public ReflectiveTypeFinder(String methodName, int expectedNumberOfParameters, int typedParameter) {
     this.methodName = methodName;
     this.expectedNumberOfParameters = expectedNumberOfParameters;
     this.typedParameter = typedParameter;
   }
   
+  @Impure
   public Class<?> findExpectedType(Class<?> fromClass) {
     for (Class<?> c = fromClass; c != Object.class; c = c.getSuperclass()) {
         for (Method method : c.getDeclaredMethods()) {
@@ -53,6 +57,7 @@ public class ReflectiveTypeFinder {
    * @param method The method to examine.
    * @return true if this method references the relevant type
    */
+  @Impure
   protected boolean canObtainExpectedTypeFrom(Method method) {
       return method.getName().equals(methodName)
               && method.getParameterTypes().length == expectedNumberOfParameters
@@ -64,6 +69,7 @@ public class ReflectiveTypeFinder {
    * @param method The method from which to extract
    * @return The type we're looking for
    */
+  @Impure
   protected Class<?> expectedTypeFrom(Method method) {
       return method.getParameterTypes()[typedParameter];
   }

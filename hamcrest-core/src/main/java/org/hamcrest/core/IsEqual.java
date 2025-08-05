@@ -2,6 +2,8 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -17,20 +19,24 @@ import java.lang.reflect.Array;
 public class IsEqual<T> extends BaseMatcher<T> {
     private final Object expectedValue;
 
+    @Impure
     public IsEqual(T equalArg) {
         expectedValue = equalArg;
     }
 
+    @Impure
     @Override
     public boolean matches(Object actualValue) {
         return areEqual(actualValue, expectedValue);
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendValue(expectedValue);
     }
 
+    @Impure
     private static boolean areEqual(Object actual, Object expected) {
         if (actual == null) {
             return expected == null;
@@ -43,14 +49,17 @@ public class IsEqual<T> extends BaseMatcher<T> {
         return actual.equals(expected);
     }
 
+    @Impure
     private static boolean areArraysEqual(Object actualArray, Object expectedArray) {
         return areArrayLengthsEqual(actualArray, expectedArray) && areArrayElementsEqual(actualArray, expectedArray);
     }
 
+    @Pure
     private static boolean areArrayLengthsEqual(Object actualArray, Object expectedArray) {
         return Array.getLength(actualArray) == Array.getLength(expectedArray);
     }
 
+    @Impure
     private static boolean areArrayElementsEqual(Object actualArray, Object expectedArray) {
         for (int i = 0; i < Array.getLength(actualArray); i++) {
             if (!areEqual(Array.get(actualArray, i), Array.get(expectedArray, i))) {
@@ -60,6 +69,7 @@ public class IsEqual<T> extends BaseMatcher<T> {
         return true;
     }
 
+    @Pure
     private static boolean isArray(Object o) {
         return o.getClass().isArray();
     }
@@ -87,6 +97,7 @@ public class IsEqual<T> extends BaseMatcher<T> {
      * </pre>
      * 
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> equalTo(T operand) {
         return new IsEqual<T>(operand);

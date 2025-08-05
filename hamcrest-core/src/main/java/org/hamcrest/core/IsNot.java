@@ -2,6 +2,7 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -16,15 +17,18 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class IsNot<T> extends BaseMatcher<T>  {
     private final Matcher<T> matcher;
 
+    @Impure
     public IsNot(Matcher<T> matcher) {
         this.matcher = matcher;
     }
 
+    @Impure
     @Override
     public boolean matches(Object arg) {
         return !matcher.matches(arg);
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("not ").appendDescriptionOf(matcher);
@@ -41,6 +45,7 @@ public class IsNot<T> extends BaseMatcher<T>  {
      * @param matcher
      *     the matcher whose sense should be inverted
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> not(Matcher<T> matcher) {
         return new IsNot<T>(matcher);
@@ -57,6 +62,7 @@ public class IsNot<T> extends BaseMatcher<T>  {
      * @param value
      *     the value that any examined object should <b>not</b> equal
      */
+    @Impure
     @Factory
     public static <T> Matcher<T> not(T value) {
         return not(equalTo(value));

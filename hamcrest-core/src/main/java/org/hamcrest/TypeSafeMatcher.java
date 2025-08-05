@@ -1,5 +1,7 @@
 package org.hamcrest;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.internal.ReflectiveTypeFinder;
 
 /**
@@ -18,6 +20,7 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
     /**
      * The default constructor for simple sub types
      */
+    @Impure
     protected TypeSafeMatcher() {
         this(TYPE_FINDER);
     }
@@ -27,6 +30,7 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
      * is <em>not</em> the class that binds &lt;T&gt; to a type. 
      * @param expectedType The expectedType of the actual value.
      */
+    @Impure
     protected TypeSafeMatcher(Class<?> expectedType) {
         this.expectedType = expectedType;
     }
@@ -36,6 +40,7 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
      * is <em>not</em> the class that binds &lt;T&gt; to a type. 
      * @param typeFinder A type finder to extract the type
      */
+    @Impure
     protected TypeSafeMatcher(ReflectiveTypeFinder typeFinder) {
       this.expectedType = typeFinder.findExpectedType(getClass()); 
     }
@@ -44,12 +49,14 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
      * Subclasses should implement this. The item will already have been checked for
      * the specific type and will never be null.
      */
+    @Pure
     protected abstract boolean matchesSafely(T item);
     
     /**
      * Subclasses should override this. The item will already have been checked for
      * the specific type and will never be null.
      */
+    @Impure
     protected void describeMismatchSafely(T item, Description mismatchDescription) {
         super.describeMismatch(item, mismatchDescription);
     }
@@ -59,6 +66,8 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
      * If you need to override this, there's no point on extending TypeSafeMatcher.
      * Instead, extend the {@link BaseMatcher}.
      */
+    @Pure
+    @Impure
     @Override
     @SuppressWarnings({"unchecked"})
     public final boolean matches(Object item) {
@@ -67,6 +76,7 @@ public abstract class TypeSafeMatcher<T> extends BaseMatcher<T> {
                 && matchesSafely((T) item);
     }
     
+    @Impure
     @SuppressWarnings("unchecked")
     @Override
     final public void describeMismatch(Object item, Description description) {

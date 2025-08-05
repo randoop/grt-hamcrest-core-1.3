@@ -1,4 +1,5 @@
 package org.hamcrest;
+import org.checkerframework.dataflow.qual.Impure;
 
 
 /**
@@ -25,6 +26,7 @@ package org.hamcrest;
 public abstract class CustomTypeSafeMatcher<T> extends TypeSafeMatcher<T> {
     private final String fixedDescription;
 
+    @Impure
     public CustomTypeSafeMatcher(String description) {
         if (description == null) {
             throw new IllegalArgumentException("Description must be non null!");
@@ -32,6 +34,7 @@ public abstract class CustomTypeSafeMatcher<T> extends TypeSafeMatcher<T> {
         this.fixedDescription = description;
     }
 
+    @Impure
     @Override
     public final void describeTo(Description description) {
         description.appendText(fixedDescription);

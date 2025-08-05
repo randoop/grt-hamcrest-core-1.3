@@ -290,9 +290,9 @@
                         <include name="*.jar"/>
                     </fileset>
                     <pathelement path="@{classpath}"/>
+                    <pathelement
+                            location="../../../scripts/build/checker-framework/checker/dist/checker-qual.jar"/>
                 </classpath>
-                <classpath location="${major.jar}"/>
-                <compilerarg value="${plugin}"/>
             </javac>
             <copy file="LICENSE.txt" todir="build/temp/@{modulename}-${version}.jar.contents"/>
             <jar jarfile="build/@{modulename}-${version}.jar" manifest="build/temp/@{modulename}-${version}.jar.manifest/MANIFEST.MF">

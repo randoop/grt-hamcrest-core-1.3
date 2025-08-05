@@ -1,5 +1,6 @@
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,15 +15,18 @@ import org.hamcrest.Matcher;
  */
 public class AnyOf<T> extends ShortcutCombination<T> {
 
+    @Impure
     public AnyOf(Iterable<Matcher<? super T>> matchers) {
         super(matchers);
     }
 
+    @Impure
     @Override
     public boolean matches(Object o) {
         return matches(o, true);
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         describeTo(description, "or");
@@ -34,6 +38,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Iterable<Matcher<? super T>> matchers) {
         return new AnyOf<T>(matchers);
@@ -45,6 +50,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<? super T>... matchers) {
         return anyOf(Arrays.asList(matchers));
@@ -56,6 +62,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<T> first, Matcher<? super T> second) {
         List<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();
@@ -70,6 +77,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<T> first, Matcher<? super T> second, Matcher<? super T> third) {
         List<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();
@@ -85,6 +93,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<T> first, Matcher<? super T> second, Matcher<? super T> third, Matcher<? super T> fourth) {
         List<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();
@@ -101,6 +110,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<T> first, Matcher<? super T> second, Matcher<? super T> third, Matcher<? super T> fourth, Matcher<? super T> fifth) {
         List<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();
@@ -118,6 +128,7 @@ public class AnyOf<T> extends ShortcutCombination<T> {
      * For example:
      * <pre>assertThat("myValue", anyOf(startsWith("foo"), containsString("Val")))</pre>
      */
+    @Impure
     @Factory
     public static <T> AnyOf<T> anyOf(Matcher<T> first, Matcher<? super T> second, Matcher<? super T> third, Matcher<? super T> fourth, Matcher<? super T> fifth, Matcher<? super T> sixth) {
         List<Matcher<? super T>> matchers = new ArrayList<Matcher<? super T>>();

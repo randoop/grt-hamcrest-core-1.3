@@ -1,4 +1,7 @@
 package org.hamcrest;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * A Condition implements part of a multi-step match. We sometimes need to write matchers
@@ -14,22 +17,33 @@ public abstract class Condition<T> {
     public static final NotMatched<Object> NOT_MATCHED = new NotMatched<Object>();
 
     public interface Step<I, O> {
+        @Pure
         Condition<O> apply(I value, Description mismatch);
     }
 
+    @SideEffectFree
     private Condition() { }
 
+    @Impure
     public abstract boolean matching(Matcher<T> match, String message);
+    @Pure
+    @Impure
     public abstract <U> Condition<U> and(Step<? super T, U> mapping);
 
+    @Impure
     public final boolean matching(Matcher<T> match) { return matching(match, ""); }
+    @Pure
+    @Impure
     public final <U> Condition<U> then(Step<? super T, U> mapping) { return and(mapping); }
 
+    @Pure
     @SuppressWarnings("unchecked")
     public static <T> Condition<T> notMatched() {
         return (Condition<T>) NOT_MATCHED;
     }
 
+    @SideEffectFree
+    @Impure
     public static <T> Condition<T> matched(final T theValue, final Description mismatch) {
         return new Matched<T>(theValue, mismatch);
     }
@@ -38,11 +52,14 @@ public abstract class Condition<T> {
         private final T theValue;
         private final Description mismatch;
 
+        @SideEffectFree
+        @Impure
         private Matched(T theValue, Description mismatch) {
             this.theValue = theValue;
             this.mismatch = mismatch;
         }
 
+        @Impure
         @Override
         public boolean matching(Matcher<T> matcher, String message) {
             if (matcher.matches(theValue)) {
@@ -53,6 +70,8 @@ public abstract class Condition<T> {
             return false;
         }
 
+        @Pure
+        @Impure
         @Override
         public <U> Condition<U> and(Step<? super T, U> next) {
             return next.apply(theValue, mismatch);
@@ -60,8 +79,11 @@ public abstract class Condition<T> {
     }
 
     private static final class NotMatched<T> extends Condition<T> {
+        @Pure
         @Override public boolean matching(Matcher<T> match, String message) { return false; }
 
+        @Pure
+        @Impure
         @Override public <U> Condition<U> and(Step<? super T, U> mapping) {
             return notMatched();
         }

@@ -1,5 +1,6 @@
 package org.hamcrest;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.internal.ReflectiveTypeFinder;
 
 
@@ -22,6 +23,7 @@ public abstract class TypeSafeDiagnosingMatcher<T> extends BaseMatcher<T> {
      * Subclasses should implement this. The item will already have been checked
      * for the specific type and will never be null.
      */
+    @Impure
     protected abstract boolean matchesSafely(T item, Description mismatchDescription);
 
     /**
@@ -29,6 +31,7 @@ public abstract class TypeSafeDiagnosingMatcher<T> extends BaseMatcher<T> {
      * is <em>not</em> the class that binds &lt;T&gt; to a type. 
      * @param expectedType The expectedType of the actual value.
      */
+    @Impure
     protected TypeSafeDiagnosingMatcher(Class<?> expectedType) {
       this.expectedType = expectedType;
     }
@@ -38,6 +41,7 @@ public abstract class TypeSafeDiagnosingMatcher<T> extends BaseMatcher<T> {
      * is <em>not</em> the class that binds &lt;T&gt; to a type. 
      * @param typeFinder A type finder to extract the type
      */
+    @Impure
     protected TypeSafeDiagnosingMatcher(ReflectiveTypeFinder typeFinder) {
       this.expectedType = typeFinder.findExpectedType(getClass()); 
     }
@@ -45,10 +49,12 @@ public abstract class TypeSafeDiagnosingMatcher<T> extends BaseMatcher<T> {
     /**
      * The default constructor for simple sub types
      */
+    @Impure
     protected TypeSafeDiagnosingMatcher() {
       this(TYPE_FINDER); 
     }
 
+    @Impure
     @Override
     @SuppressWarnings("unchecked")
     public final boolean matches(Object item) {
@@ -57,6 +63,7 @@ public abstract class TypeSafeDiagnosingMatcher<T> extends BaseMatcher<T> {
             && matchesSafely((T) item, new Description.NullDescription());
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     @Override
     public final void describeMismatch(Object item, Description mismatchDescription) {

@@ -1,6 +1,8 @@
 /*  Copyright (c) 2000-2006 hamcrest.org
  */
 package org.hamcrest;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * A matcher over acceptable values.
@@ -34,6 +36,7 @@ public interface Matcher<T> extends SelfDescribing {
      *
      * @see BaseMatcher
      */
+    @Impure
     boolean matches(Object item);
     
     /**
@@ -47,6 +50,7 @@ public interface Matcher<T> extends SelfDescribing {
      * @param mismatchDescription
      *     The description to be built or appended to.
      */
+    @Impure
     void describeMismatch(Object item, Description mismatchDescription);
 
     /**
@@ -58,6 +62,7 @@ public interface Matcher<T> extends SelfDescribing {
      * @see BaseMatcher
      * @deprecated to make
      */
+    @SideEffectFree
     @Deprecated
     void _dont_implement_Matcher___instead_extend_BaseMatcher_();
 }

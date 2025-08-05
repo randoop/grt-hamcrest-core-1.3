@@ -1,5 +1,7 @@
 package org.hamcrest;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.IOException;
 
 /**
@@ -8,10 +10,12 @@ import java.io.IOException;
 public class StringDescription extends BaseDescription {
     private final Appendable out;
 
+    @Impure
     public StringDescription() {
         this(new StringBuilder());
     }
 
+    @Impure
     public StringDescription(Appendable out) {
         this.out = out;
     }
@@ -24,6 +28,7 @@ public class StringDescription extends BaseDescription {
      * @return
      *   The description of the object.
      */
+    @Impure
     public static String toString(SelfDescribing selfDescribing) {
         return new StringDescription().appendDescriptionOf(selfDescribing).toString();
     }
@@ -31,10 +36,12 @@ public class StringDescription extends BaseDescription {
     /**
      * Alias for {@link #toString(SelfDescribing)}.
      */
+    @Impure
     public static String asString(SelfDescribing selfDescribing) {
         return toString(selfDescribing);
     }
 
+    @Impure
     @Override
     protected void append(String str) {
         try {
@@ -44,6 +51,7 @@ public class StringDescription extends BaseDescription {
         }
     }
 
+    @Impure
     @Override
     protected void append(char c) {
         try {
@@ -56,6 +64,7 @@ public class StringDescription extends BaseDescription {
     /**
      * Returns the description as a string.
      */
+    @SideEffectFree
     @Override
     public String toString() {
         return out.toString();

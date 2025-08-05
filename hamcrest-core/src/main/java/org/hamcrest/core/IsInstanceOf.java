@@ -2,6 +2,8 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.Description;
 import org.hamcrest.DiagnosingMatcher;
 import org.hamcrest.Factory;
@@ -22,11 +24,13 @@ public class IsInstanceOf extends DiagnosingMatcher<Object> {
      * @param expectedClass The predicate evaluates to true for instances of this class
      *                 or one of its subclasses.
      */
+    @Impure
     public IsInstanceOf(Class<?> expectedClass) {
         this.expectedClass = expectedClass;
         this.matchableClass = matchableClass(expectedClass);
     }
 
+    @Pure
     private static Class<?> matchableClass(Class<?> expectedClass) {
       if (boolean.class.equals(expectedClass)) return Boolean.class; 
       if (byte.class.equals(expectedClass)) return Byte.class; 
@@ -39,6 +43,7 @@ public class IsInstanceOf extends DiagnosingMatcher<Object> {
       return expectedClass;
     }
 
+    @Impure
     @Override
     protected boolean matches(Object item, Description mismatch) {
       if (null == item) {
@@ -54,6 +59,7 @@ public class IsInstanceOf extends DiagnosingMatcher<Object> {
       return true;
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("an instance of ").appendText(expectedClass.getName());
@@ -70,6 +76,7 @@ public class IsInstanceOf extends DiagnosingMatcher<Object> {
      * <pre>assertThat(new Canoe(), instanceOf(Paddlable.class));</pre>
      * 
      */
+    @Impure
     @SuppressWarnings("unchecked")
     @Factory
     public static <T> Matcher<T> instanceOf(Class<?> type) {
@@ -89,6 +96,7 @@ public class IsInstanceOf extends DiagnosingMatcher<Object> {
      * <pre>assertThat(new Canoe(), instanceOf(Canoe.class));</pre>
      *
      */
+    @Impure
     @SuppressWarnings("unchecked")
     @Factory
     public static <T> Matcher<T> any(Class<T> type) {

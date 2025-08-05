@@ -1,5 +1,7 @@
 package org.hamcrest;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import static java.lang.String.valueOf;
 
 import java.util.Arrays;
@@ -13,18 +15,21 @@ import org.hamcrest.internal.SelfDescribingValueIterator;
  */
 public abstract class BaseDescription implements Description {
 
+    @Impure
     @Override
     public Description appendText(String text) {
         append(text);
         return this;
     }
     
+    @Impure
     @Override
     public Description appendDescriptionOf(SelfDescribing value) {
         value.describeTo(this);
         return this;
     }
     
+    @Impure
     @Override
     public Description appendValue(Object value) {
         if (value == null) {
@@ -57,6 +62,7 @@ public abstract class BaseDescription implements Description {
         return this;
     }
 
+    @SideEffectFree
     private String descriptionOf(Object value) {
         try {
             return valueOf(value);
@@ -66,25 +72,30 @@ public abstract class BaseDescription implements Description {
         }
     }
 
+    @Impure
     @Override
     public <T> Description appendValueList(String start, String separator, String end, T... values) {
         return appendValueList(start, separator, end, Arrays.asList(values));
     }
     
+    @Impure
     @Override
     public <T> Description appendValueList(String start, String separator, String end, Iterable<T> values) {
         return appendValueList(start, separator, end, values.iterator());
     }
     
+    @Impure
     private <T> Description appendValueList(String start, String separator, String end, Iterator<T> values) {
         return appendList(start, separator, end, new SelfDescribingValueIterator<T>(values));
     }
     
+    @Impure
     @Override
     public Description appendList(String start, String separator, String end, Iterable<? extends SelfDescribing> values) {
         return appendList(start, separator, end, values.iterator());
     }
 
+    @Impure
     private Description appendList(String start, String separator, String end, Iterator<? extends SelfDescribing> i) {
         boolean separate = false;
         
@@ -104,6 +115,7 @@ public abstract class BaseDescription implements Description {
      * The default implementation passes every character to {@link #append(char)}.  
      * Override in subclasses to provide an efficient implementation.
      */
+    @Impure
     protected void append(String str) {
         for (int i = 0; i < str.length(); i++) {
             append(str.charAt(i));
@@ -113,8 +125,10 @@ public abstract class BaseDescription implements Description {
     /**
      * Append the char <var>c</var> to the description.  
      */
+    @Impure
     protected abstract void append(char c);
 
+    @Impure
     private void toJavaSyntax(String unformatted) {
         append('"');
         for (int i = 0; i < unformatted.length(); i++) {
@@ -123,6 +137,7 @@ public abstract class BaseDescription implements Description {
         append('"');
     }
 
+    @Impure
     private void toJavaSyntax(char ch) {
         switch (ch) {
             case '"':

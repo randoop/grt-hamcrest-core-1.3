@@ -2,6 +2,8 @@
  */
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
@@ -9,15 +11,18 @@ import org.hamcrest.Matcher;
  * Tests if the argument is a string that contains a substring.
  */
 public class StringEndsWith extends SubstringMatcher {
+    @Impure
     public StringEndsWith(String substring) {
         super(substring);
     }
 
+    @Pure
     @Override
     protected boolean evalSubstringOf(String s) {
         return s.endsWith(substring);
     }
 
+    @Pure
     @Override
     protected String relationship() {
         return "ending with";
@@ -33,6 +38,7 @@ public class StringEndsWith extends SubstringMatcher {
      * @param suffix
      *      the substring that the returned matcher will expect at the end of any examined string
      */
+    @Impure
     @Factory
     public static Matcher<String> endsWith(String suffix) {
         return new StringEndsWith(suffix);

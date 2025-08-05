@@ -1,4 +1,5 @@
 package org.hamcrest;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * Utility class for writing one off matchers.
@@ -23,6 +24,7 @@ package org.hamcrest;
 public abstract class CustomMatcher<T> extends BaseMatcher<T> {
     private final String fixedDescription;
 
+    @Impure
     public CustomMatcher(String description) {
         if (description == null) {
             throw new IllegalArgumentException("Description should be non null!");
@@ -30,6 +32,7 @@ public abstract class CustomMatcher<T> extends BaseMatcher<T> {
         this.fixedDescription = description;
     }
 
+    @Impure
     @Override
     public final void describeTo(Description description) {
         description.appendText(fixedDescription);

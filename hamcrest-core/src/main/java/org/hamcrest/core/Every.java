@@ -1,5 +1,6 @@
 package org.hamcrest.core;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
@@ -8,10 +9,12 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 public class Every<T> extends TypeSafeDiagnosingMatcher<Iterable<T>> {
     private final Matcher<? super T> matcher;
 
+    @Impure
     public Every(Matcher<? super T> matcher) {
         this.matcher= matcher;
     }
 
+    @Impure
     @Override
     public boolean matchesSafely(Iterable<T> collection, Description mismatchDescription) {
         for (T t : collection) {
@@ -24,6 +27,7 @@ public class Every<T> extends TypeSafeDiagnosingMatcher<Iterable<T>> {
         return true;
     }
 
+    @Impure
     @Override
     public void describeTo(Description description) {
         description.appendText("every item is ").appendDescriptionOf(matcher);
@@ -40,6 +44,7 @@ public class Every<T> extends TypeSafeDiagnosingMatcher<Iterable<T>> {
      * @param itemMatcher
      *     the matcher to apply to every item provided by the examined {@link Iterable}
      */
+    @Impure
     @Factory
     public static <U> Matcher<Iterable<U>> everyItem(final Matcher<U> itemMatcher) {
         return new Every<U>(itemMatcher);
